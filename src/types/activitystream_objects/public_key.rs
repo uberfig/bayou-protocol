@@ -8,7 +8,7 @@ use crate::cryptography::{key::Key, openssl::OpenSSLPublic};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct PublicKey {
+pub struct ApPublicKey {
     pub id: Url,    //https://my-example.com/actor#main-key
     pub owner: Url, //"https://my-example.com/actor"
     #[cfg(not(feature = "crypto"))]
@@ -43,7 +43,7 @@ where
     }
 }
 
-impl From<String> for PublicKey {
+impl From<String> for ApPublicKey {
     fn from(value: String) -> Self {
         serde_json::from_str(&value).unwrap()
     }
@@ -63,7 +63,7 @@ mod tests {
     "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtpNfuGPl/WTnSq3dTurF\nMRelAIdvGVkO/VKYZJvIleYA27/YTnpmlY2g+0az4xEhOBtVNA1cTpS63CdXRyNz\ncH/GZtzxkdxN91vZSw0JVy+wG34dzwcq1KWFDz9D/5Tqf16KUJH+TDTlxdOBds91\nIZg+TTkiT+xfnSiC5SLMnn1dTzCW9P0yNJxpn37z7p6pEs63X1wstEEX1qGDUQTO\n1JICpKDjuQZMlioAAA5KG25tg2f+zKlv5M/NI33DblquyJ7TYvIpDN8hsFCRjuvA\nmjtKz/1XIRvQkeKND3UkqX8s6qTGyNOjcT86qt9BqYHYGuppjpRG/QNGoKYalio1\nwwIDAQAB\n-----END PUBLIC KEY-----\n"
 }
         "#;
-        let deserialized: Result<PublicKey, serde_json::Error> = serde_json::from_str(pub_key);
+        let deserialized: Result<ApPublicKey, serde_json::Error> = serde_json::from_str(pub_key);
 
         match deserialized {
             Ok(_x) => Ok(()),

@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 use url::Url;
 
 #[cfg(feature = "crypto")]
-use super::public_key::PublicKey;
+use super::public_key::VersiaPublicKey;
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum InstanceMetadataType {
@@ -47,7 +47,7 @@ pub struct InstanceMetadata {
     pub logo: Option<ContentFormat>,
     #[cfg(feature = "crypto")]
     /// Public key of the instance.
-    pub public_key: PublicKey,
+    pub public_key: VersiaPublicKey,
     /// Banner of the instance. Must be an image format (image/*).
     pub banner: Option<ContentFormat>,
     #[serde(deserialize_with = "deserialize_time")]
@@ -70,7 +70,7 @@ impl InstanceMetadata {
         host: String,
         logo: Option<ContentFormat>,
         #[cfg(feature = "crypto")]
-        public_key: PublicKey,
+        public_key: VersiaPublicKey,
         banner: Option<ContentFormat>,
         created_at: i64,
     ) -> InstanceMetadata {

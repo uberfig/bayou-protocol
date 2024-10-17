@@ -6,7 +6,7 @@ use super::super::extensions::emoji::Emoji;
 use super::super::serde_fns::{default_false, default_true, deserialize_time, serialize_time};
 use super::super::structures::content_format::{ImageContentFormat, TextContentFormat};
 #[cfg(feature = "crypto")]
-use super::public_key::PublicKey;
+use super::public_key::VersiaPublicKey;
 
 /// Users are identified by their id property, which is unique within the instance.
 ///
@@ -46,7 +46,7 @@ pub struct User {
     pub header: Option<ImageContentFormat>,
     #[cfg(feature = "crypto")]
     /// see [`PublicKey`]
-    pub public_key: PublicKey,
+    pub public_key: VersiaPublicKey,
     /// If true, the user must approve any new followers manually.
     /// If false, followers are automatically approved.
     /// This does not affect federation, and is meant to be used for
@@ -169,7 +169,7 @@ mod tests {
             username: "ivy".to_string(),
             header: None,
             #[cfg(feature = "crypto")]
-            public_key: PublicKey {
+            public_key: VersiaPublicKey {
                 actor: None,
                 key: AlgorithmsPublicKey::Ed25519(Ed25519Public {
                     key: generate_verifying_key(),

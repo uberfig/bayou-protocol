@@ -1,4 +1,4 @@
-use super::{context::ContextWrap, public_key::PublicKey};
+use super::{context::ContextWrap, public_key::ApPublicKey};
 use serde::{Deserialize, Serialize};
 use url::Url;
 
@@ -55,7 +55,7 @@ pub struct Actor {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub url: Option<Url>,
 
-    pub public_key: PublicKey,
+    pub public_key: ApPublicKey,
 
     pub inbox: Url,
     pub outbox: Url,

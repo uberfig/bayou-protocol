@@ -13,7 +13,7 @@ use url::Url;
 /// - key: The public key in SPKI-encoded base64 (from raw bytes, not a PEM format). Must be the key associated with the actor URI.
 /// - actor: URI to a user's profile, most often the user's own profile.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct PublicKey {
+pub struct VersiaPublicKey {
     pub actor: Option<Url>,
     /// algorithm used for the public key. Can only be ed25519 for now.
     ///
@@ -117,7 +117,7 @@ mod tests {
         let key = Ed25519Public {
             key: generate_verifying_key(),
         };
-        let key = PublicKey {
+        let key = VersiaPublicKey {
             actor: None,
             key: AlgorithmsPublicKey::Ed25519(key),
         };
@@ -150,7 +150,7 @@ mod tests {
             key
         );
         println!("{}", &public_key);
-        let deserialized: Result<PublicKey, serde_json::Error> = serde_json::from_str(&public_key);
+        let deserialized: Result<VersiaPublicKey, serde_json::Error> = serde_json::from_str(&public_key);
         match deserialized {
             Ok(_) => Ok(()),
             Err(x) => Err(format!("user deserialize failed: {}", x)),
