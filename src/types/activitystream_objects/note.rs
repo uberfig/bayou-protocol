@@ -1,6 +1,8 @@
 use super::super::versia_types::serde_fns::{deserialize_time, serialize_time};
+use super::collections::Collection;
+use super::postable::ApPostable;
 use super::{
-    collections::ExtendsCollection, context::Context, core_types::OptionalArray,
+    context::Context, core_types::OptionalArray,
     link::LinkSimpleOrExpanded,
 };
 use serde::{Deserialize, Serialize};
@@ -75,7 +77,7 @@ pub struct Note {
     pub bcc: Option<String>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub replies: Option<ExtendsCollection>,
+    pub replies: Option<Collection<ApPostable>>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub versia_url: Option<Url>,
