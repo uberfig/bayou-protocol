@@ -1,5 +1,5 @@
 [package]
-name = "bayou-types"
+name = "bayou-protocol"
 version = "0.1.0"
 edition = "2021"
 
