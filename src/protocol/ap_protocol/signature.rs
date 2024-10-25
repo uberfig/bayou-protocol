@@ -7,13 +7,22 @@ use url::Url;
 
 use super::super::{headers::Headers, http_method::HttpMethod};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub enum Algorithms {
     #[serde(rename = "rsa-sha256")]
     RsaSha256,
     /// is actually Ed25519-SHA512
     #[serde(rename = "hs2019")]
     Hs2019,
+}
+
+impl std::fmt::Display for Algorithms {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Algorithms::RsaSha256 => write!(f, "rsa-sha256"),
+            Algorithms::Hs2019 => write!(f, "hs2019"),
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

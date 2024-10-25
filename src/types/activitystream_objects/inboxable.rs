@@ -11,6 +11,8 @@ use crate::cryptography::key::PrivateKey;
 #[cfg(feature = "crypto")]
 use crate::protocol::ap_protocol::fetch::authorized_fetch;
 #[cfg(feature = "protocol")]
+use crate::protocol::ap_protocol::signature::Algorithms;
+#[cfg(feature = "protocol")]
 use crate::protocol::errors::FetchErr;
 use serde::{Deserialize, Serialize};
 
@@ -56,13 +58,14 @@ pub enum InboxableVerifyErr {
     ForgedAttribution,
 }
 
+#[cfg(feature = "protocol")]
 impl Inboxable {
-    #[cfg(feature = "crypto")]
     pub async fn verify<K: PrivateKey>(
         self,
         origin_domain: &str,
         instance_key_id: &str,
         instance_private_key: &mut K,
+        algorithm: Algorithms,
     ) -> Result<VerifiedInboxable, InboxableVerifyErr> {
         match self {
             Inboxable::Postable(postable) => match postable.verify(origin_domain) {
@@ -74,9 +77,10 @@ impl Inboxable {
                     RangeLinkItem::Item(x) => x,
                     RangeLinkItem::Link(post_id) => {
                         let postable: Result<ApPostable, FetchErr> = authorized_fetch(
-                            post_id.get_id(),
+                            post_id.get_id().to_owned(),
                             instance_key_id,
                             instance_private_key,
+                            algorithm,
                         )
                         .await;
                         match postable {

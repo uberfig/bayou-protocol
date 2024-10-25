@@ -14,7 +14,7 @@ use crate::{
 use super::{
     super::{errors::FetchErr, headers::Headers, http_method::HttpMethod},
     fetch::authorized_fetch,
-    signature::{Signature, SignatureErr},
+    signature::{Algorithms, Signature, SignatureErr},
 };
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -42,6 +42,7 @@ pub async fn verify_post<K: PrivateKey, H: Headers>(
     instance_domain: &str,
     instance_key_id: &str,
     instance_private_key: &mut K,
+    algorithm: Algorithms,
 ) -> Result<VerifiedInboxable, RequestVerificationError> {
     //check digest matches
 
@@ -82,9 +83,10 @@ pub async fn verify_post<K: PrivateKey, H: Headers>(
     }
 
     let fetched: Result<Actor, FetchErr> = authorized_fetch(
-        &signature.signature_header.key_id,
+        signature.signature_header.key_id.clone(),
         instance_key_id,
         instance_private_key,
+        algorithm,
     )
     .await;
 
@@ -117,6 +119,7 @@ pub async fn verify_post<K: PrivateKey, H: Headers>(
             &signature.signature_header.key_domain,
             instance_key_id,
             instance_private_key,
+            algorithm,
         )
         .await
     {
@@ -133,6 +136,7 @@ pub async fn verify_get<K: PrivateKey, H: Headers>(
     instance_domain: &str,
     instance_key_id: &str,
     instance_private_key: &mut K,
+    algorithm: Algorithms,
 ) -> Result<(), RequestVerificationError> {
     //get the signature header
     let Some(signature_header) = request_headers.get("Signature") else {
@@ -149,9 +153,10 @@ pub async fn verify_get<K: PrivateKey, H: Headers>(
     };
 
     let fetched: Result<Actor, FetchErr> = authorized_fetch(
-        &signature.signature_header.key_id,
+        signature.signature_header.key_id.clone(),
         instance_key_id,
         instance_private_key,
+        algorithm,
     )
     .await;
 
