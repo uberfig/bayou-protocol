@@ -1,6 +1,5 @@
-use serde::{Deserialize, Serialize};
-#[cfg(feature = "protocol")]
-use crate::protocol::errors::FetchErr;
+#[cfg(feature = "crypto")]
+use super::link::RangeLinkItem;
 use super::{
     create::Create,
     delete::Delete,
@@ -8,12 +7,12 @@ use super::{
     postable::ApPostable,
 };
 #[cfg(feature = "crypto")]
-use super::link::RangeLinkItem;
-#[cfg(feature = "crypto")]
 use crate::cryptography::key::PrivateKey;
 #[cfg(feature = "crypto")]
 use crate::protocol::ap_protocol::fetch::authorized_fetch;
-
+#[cfg(feature = "protocol")]
+use crate::protocol::errors::FetchErr;
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(untagged)]

@@ -69,8 +69,7 @@ impl InstanceMetadata {
         description: Option<String>,
         host: String,
         logo: Option<ContentFormat>,
-        #[cfg(feature = "crypto")]
-        public_key: VersiaPublicKey,
+        #[cfg(feature = "crypto")] public_key: VersiaPublicKey,
         banner: Option<ContentFormat>,
         created_at: i64,
     ) -> InstanceMetadata {

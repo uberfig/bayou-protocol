@@ -14,4 +14,5 @@ pub mod object;
 pub mod postable;
 pub mod public_key;
 pub mod question;
+pub mod share;
 pub mod tombstone;

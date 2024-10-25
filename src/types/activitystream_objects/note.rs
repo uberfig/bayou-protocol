@@ -1,10 +1,7 @@
 use super::super::versia_types::serde_fns::{deserialize_time, serialize_time};
 use super::collections::Collection;
 use super::postable::ApPostable;
-use super::{
-    context::Context, core_types::OptionalArray,
-    link::LinkSimpleOrExpanded,
-};
+use super::{context::Context, core_types::OptionalArray, link::LinkSimpleOrExpanded};
 use serde::{Deserialize, Serialize};
 use url::Url;
 

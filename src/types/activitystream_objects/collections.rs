@@ -28,10 +28,10 @@ pub struct Collection<T: Clone> {
     pub id: Url,
 
     pub total_items: Option<u32>,
-    pub current: Option<String>,                      //TODO
+    pub current: Option<String>,                         //TODO
     pub first: Option<RangeLinkItem<CollectionPage<T>>>, //TODO
-    pub last: Option<String>,                         //TODO
-    pub items: Option<Vec<String>>,                   //TODO
+    pub last: Option<String>,                            //TODO
+    pub items: Option<Vec<String>>,                      //TODO
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -56,12 +56,12 @@ pub struct CollectionPage<T: Clone> {
     /// as seen with replies in [`super::object::tests::test_deserialize_note()`]
     pub id: Option<Url>,
     pub total_items: Option<u32>,
-    pub part_of: Option<String>,    //TODO
-    pub next: Option<String>,       //TODO
-    pub prev: Option<String>,       //TODO
-    pub current: Option<String>,    //TODO
-    pub first: Option<String>,      //TODO
-    pub last: Option<String>,       //TODO
+    pub part_of: Option<String>, //TODO
+    pub next: Option<String>,    //TODO
+    pub prev: Option<String>,    //TODO
+    pub current: Option<String>, //TODO
+    pub first: Option<String>,   //TODO
+    pub last: Option<String>,    //TODO
     #[serde(flatten)]
     pub items: Option<StupidWrap<Box<T>>>, //TODO
 }

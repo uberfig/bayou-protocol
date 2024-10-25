@@ -1,9 +1,9 @@
-use serde::{Deserialize, Serialize};
-use url::Url;
 #[cfg(feature = "protocol")]
 use super::inboxable::InboxableVerifyErr;
+use serde::{Deserialize, Serialize};
+use url::Url;
 
-use super::{context::ContextWrap, note::Note, question::Question};
+use super::{context::ContextWrap, note::Note, question::Question, share::Share};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(untagged)]
@@ -11,6 +11,7 @@ use super::{context::ContextWrap, note::Note, question::Question};
 pub enum ApPostable {
     Question(Question),
     Note(Note),
+    Share(Share),
 }
 
 impl ApPostable {
@@ -18,12 +19,14 @@ impl ApPostable {
         match self {
             ApPostable::Question(question) => &question.id,
             ApPostable::Note(note) => &note.id,
+            ApPostable::Share(share) => &share.id,
         }
     }
     pub fn actor(&self) -> &Url {
         match self {
             ApPostable::Question(question) => &question.actor,
             ApPostable::Note(note) => &note.attributed_to,
+            ApPostable::Share(share) => &share.actor,
         }
     }
     #[cfg(feature = "protocol")]
@@ -44,6 +47,10 @@ impl ApPostable {
             ApPostable::Note(note) => ContextWrap {
                 context: Note::get_context(),
                 item: ApPostable::Note(note),
+            },
+            ApPostable::Share(share) => ContextWrap {
+                context: Share::get_context(),
+                item: ApPostable::Share(share),
             },
         }
     }

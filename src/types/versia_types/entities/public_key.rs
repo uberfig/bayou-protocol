@@ -150,7 +150,8 @@ mod tests {
             key
         );
         println!("{}", &public_key);
-        let deserialized: Result<VersiaPublicKey, serde_json::Error> = serde_json::from_str(&public_key);
+        let deserialized: Result<VersiaPublicKey, serde_json::Error> =
+            serde_json::from_str(&public_key);
         match deserialized {
             Ok(_) => Ok(()),
             Err(x) => Err(format!("user deserialize failed: {}", x)),

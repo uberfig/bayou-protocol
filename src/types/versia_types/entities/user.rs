@@ -139,11 +139,11 @@ pub struct PubVersiaMigration {
 #[cfg(test)]
 mod tests {
     #[cfg(feature = "crypto")]
+    use super::super::super::entities::public_key::{AlgorithmsPublicKey, Ed25519Public};
+    #[cfg(feature = "crypto")]
     use ed25519_dalek::SigningKey;
     #[cfg(feature = "crypto")]
     use rand::rngs::OsRng;
-    #[cfg(feature = "crypto")]
-    use super::super::super::entities::public_key::{AlgorithmsPublicKey, Ed25519Public};
 
     use super::*;
 
