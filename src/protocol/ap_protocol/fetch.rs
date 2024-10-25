@@ -9,7 +9,7 @@ use crate::cryptography::key::PrivateKey;
 /// being used to perform the fetch. usually done by the
 /// instance actor
 pub async fn authorized_fetch<T: PrivateKey, F: for<'a> Deserialize<'a>>(
-    object_id: &Url,
+    object_id: Url,
     key_id: &str,
     private_key: &mut T,
 ) -> Result<F, FetchErr> {
@@ -30,7 +30,7 @@ pub async fn authorized_fetch<T: PrivateKey, F: for<'a> Deserialize<'a>>(
 
     let client = reqwest::Client::new();
     let client = client
-        .get(object_id.clone())
+        .get(object_id)
         .header("Host", fetch_domain)
         .header("Date", date)
         .header("Signature", header)
@@ -69,7 +69,7 @@ pub async fn authorized_fetch<T: PrivateKey, F: for<'a> Deserialize<'a>>(
 }
 
 pub async fn ap_post<T: PrivateKey>(
-    endpoint: &Url,
+    endpoint: Url,
     object: &str,
     digest: &str,
     key_id: &str,
@@ -92,7 +92,7 @@ pub async fn ap_post<T: PrivateKey>(
 
     let client = reqwest::Client::new();
     let client = client
-        .post(endpoint.clone())
+        .post(endpoint)
         .header("Host", fetch_domain)
         .header("Date", date)
         .header("Digest", digest)
