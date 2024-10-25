@@ -120,7 +120,7 @@ pub async fn versia_post<K: PrivateKey, V: VersiaVerificationCache>(
         .header("X-Nonce", nonce)
         .header("User-Agent", format!("{}/{}", SOFTWARE_NAME, VERSION))
         .header("Signed-milis", signed_at)
-        .body("");
+        .body(content.to_owned());
 
     let res = client.send().await;
 

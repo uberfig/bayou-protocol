@@ -67,3 +67,53 @@ pub async fn authorized_fetch<T: PrivateKey, F: for<'a> Deserialize<'a>>(
 
     Ok(object)
 }
+
+pub async fn ap_post<T: PrivateKey>(
+    endpoint: &Url,
+    object: &str,
+    digest: &str,
+    key_id: &str,
+    private_key: &mut T,
+) -> Result<(), FetchErr> {
+    let path = endpoint.path();
+    let Some(fetch_domain) = endpoint.host_str() else {
+        return Err(FetchErr::InvalidUrl(endpoint.as_str().to_string()));
+    };
+
+    let date = httpdate::fmt_http_date(SystemTime::now());
+
+    //string to be signed
+    let signed_string = format!("(request-target): get {path}\nhost: {fetch_domain}\ndate: {date}\ndigest: {digest}\naccept: application/activity+json");
+    let signature = private_key.sign(&signed_string);
+
+    let header = format!(
+        r#"keyId="{key_id}",headers="(request-target) host date accept",signature="{signature}""#
+    );
+
+    let client = reqwest::Client::new();
+    let client = client
+        .post(endpoint.clone())
+        .header("Host", fetch_domain)
+        .header("Date", date)
+        .header("Digest", digest)
+        .header("Signature", header)
+        .header("accept", "application/activity+json")
+        .body(object.to_owned());
+
+    // dbg!(&client);
+
+    let res = client.send().await;
+    // dbg!(&res);
+
+    let res = match res {
+        Ok(x) => x,
+        Err(x) => return Err(FetchErr::RequestErr(x.to_string())),
+    };
+
+    if res.status() == 201 {
+        return Ok(());
+    }
+    else {
+        return Err(FetchErr::RequestErr(format!("post got status: {} with body: {}", res.status(), res.text().await.unwrap_or("".to_string()))));
+    }
+}
