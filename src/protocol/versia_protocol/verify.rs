@@ -10,7 +10,7 @@ use super::{requests::Signer, signatures::signature_string};
 /// the use of async trait and trait objects with async
 #[allow(async_fn_in_trait)]
 pub trait VersiaVerificationCache {
-    async fn get_key(&self, signed_by: &Signer) -> Option<OpenSSLPublic>;
+    async fn verify_get_key(&self, signed_by: &Signer) -> Option<OpenSSLPublic>;
 }
 
 /// returns the signer if successful
@@ -66,7 +66,7 @@ pub async fn verify_request<H: Headers, V: VersiaVerificationCache>(
     //     return Err(VerifyRequestErr::TooOld);
     // }
 
-    let Some(verifying_key) = conn.get_key(&signed_by).await else {
+    let Some(verifying_key) = conn.verify_get_key(&signed_by).await else {
         return Err(VerifyRequestErr::UnableToObtainKey);
     };
 
